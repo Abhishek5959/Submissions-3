@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rialo Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .quiz-container {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .controls {
+      margin-top: 20px;
+      text-align: center;
+    }
+    button {
+      background: #0070f3;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005bb5;
+    }
+    .option {
+      display: block;
+      margin: 10px 0;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .option:hover {
+      background: #f0f0f0;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .counter {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Rialo Quiz</h1>
+    <div id="quiz"></div>
+    <div class="controls">
+      <button id="checkBtn">Submit Quiz</button>
+    </div>
+    <div class="result" id="result"></div>
+    <div class="counter" id="counter"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "What does Rialo aim to simplify?",
+        options: ["Blockchain trading", "Agent economy", "Social media", "Cloud storage"],
+        answer: "Agent economy"
+      },
+      {
+        question: "Which feature helps ensure Rialo is safe?",
+        options: ["Decentralized exchanges", "AI moderation", "Verification system", "Encrypted wallets"],
+        answer: "Verification system"
+      },
+      {
+        question: "Rialo was introduced to make agents more:",
+        options: ["Complex", "Accessible", "Expensive", "Centralized"],
+        answer: "Accessible"
+      },
+      {
+        question: "Which platform is Rialo focusing on?",
+        options: ["Gaming", "Agent marketplace", "Video streaming", "Messaging"],
+        answer: "Agent marketplace"
+      }
+    ];
+
+    const quizEl = document.getElementById("quiz");
+    const checkBtn = document.getElementById("checkBtn");
+    const resultText = document.getElementById("result");
+    const counterDisplay = document.getElementById("counter");
+
+    let submissions = 0;
+
+    function loadQuiz() {
+      quizEl.innerHTML = "";
+      quizData.forEach((q, idx) => {
+        const block = document.createElement("div");
+        block.innerHTML = `<p><b>${idx + 1}. ${q.question}</b></p>`;
+        q.options.forEach(opt => {
+          block.innerHTML += `
+            <label class="option">
+              <input type="radio" name="q${idx}" value="${opt}"> ${opt}
+            </label>
+          `;
+        });
+        quizEl.appendChild(block);
+      });
+    }
+
+    checkBtn.addEventListener("click", () => {
+      let score = 0;
+      quizData.forEach((q, idx) => {
+        const sel = document.querySelector(`input[name="q${idx}"]:checked`);
+        if (sel && sel.value === q.answer) {
+          score++;
+        }
+      });
+      submissions++;
+      resultText.textContent = `You got ${score} / ${quizData.length}`;
+      counterDisplay.textContent = `Total Submissions: ${submissions}`;
+    });
+
+    // only load quiz initially
+    window.onload = loadQuiz;
+  </script>
+</body>
+</html>
